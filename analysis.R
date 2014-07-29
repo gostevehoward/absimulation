@@ -35,6 +35,8 @@ plot.treatment.rate.distribution <- function(baseline.rate) {
   return(
     qplot(treatment.rates, density, geom='line', xlab='Treatment rate')
     + geom_vline(xintercept=baseline.rate, linetype='dashed', col=BASELINE.COLOR)
+    + ylab('Density')
+    + scale_y_continuous(breaks=NULL)
   )
 }
 
@@ -104,7 +106,7 @@ base.histogram <- ggplot(data) + facet_wrap(~ decision.type, scales='free_y', nc
               color=EXPECTATION.COLOR)
  + xlab('Final rate')
  + theme(text=element_text(size=9), strip.text=element_text(size=6))
- + scale_y_continuous(breaks=NULL) + ylab(NULL)
+ + scale_y_continuous(breaks=NULL) + ylab('Count')
  + scale_x_continuous(limits=c(0, 1))
 )
 
@@ -122,8 +124,8 @@ FOCUS.DECISION.TYPES <- c(
 focused.data <- subset(data, decision.type %in% FOCUS.DECISION.TYPES)
 
 focused.base.histogram <- (
-  base.histogram %+% focused.data + facet_wrap(~ decision.type, ncol=1)
-  + aes(fill=decision.type) + guides(fill=FALSE) + ylab(NULL)
+  base.histogram %+% focused.data + facet_wrap(~ decision.type, ncol=1, scales="free_y")
+  + aes(fill=decision.type) + guides(fill=FALSE) + ylab('Count') + scale_y_continuous(breaks=NULL)
 )
 
 focused.base.histogram + aes(final.rate) + geom_bar(binwidth=0.05) + xlab('Final rate')
